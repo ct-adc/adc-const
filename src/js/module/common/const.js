@@ -3,7 +3,7 @@ import Const from 'const';
 const con = new Const();
 const status = [{
     key: '',
-    val: '请选择'
+    val: '不限'
 }, {
     key: 1,
     val: '已启用'
@@ -13,7 +13,7 @@ const status = [{
 }];
 const os = [{
     key: '',
-    val: '请选择'
+    val: '不限'
 }, {
     key: 1,
     val: '安卓'
@@ -23,7 +23,7 @@ const os = [{
 }];
 const tagType = [{
     key: '',
-    val: '请选择'
+    val: '不限'
 }, {
     key: true,
     val: '标签'
@@ -61,4 +61,5 @@ con.register('type', {
     }
 });
 
+console.log(con);
 export default con;

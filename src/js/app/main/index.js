@@ -1,10 +1,10 @@
 import Const from 'common/const';
 
-console.log(Const.getData({col: 'status'}));
-console.log(Const.getData({col: 'os'}));
-console.log(Const.getData({col: 'tagType'}));
+console.log(Const.getData('status'));
+console.log(Const.getData('os'));
+console.log(Const.getData({col: 'tagType', hasDef: false}));
 Const.type().then(()=>{
-    console.log(Const.getData({col: 'type'}));
+    console.log(Const.getData({col: 'type', def: '请选择'}));
 });
 Const.ensure(['type']).then(()=>{
     console.log(Const.getData({col: 'type'}));

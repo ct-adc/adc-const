@@ -44,7 +44,7 @@ class Const {
         this.config = utility.base.extend(true, {}, defaultConfig, config);
     }
 
-    isAsync(col){
+    isAsync(col) {
         return !Array.isArray(this[col]);
     }
 
@@ -54,7 +54,7 @@ class Const {
      * dataList中的每个key将被作为const实例的key，值会被作为实例的值
      */
     add(dataList = {}) {
-        Object.keys(dataList).map(col=>{
+        Object.keys(dataList).map(col => {
             this[col] = dataList[col];
         });
     }
@@ -86,7 +86,7 @@ class Const {
             };
         });
 
-        if (defaultOption.append){
+        if (defaultOption.append) {
             result.unshift({
                 key: defaultOption.key,
                 val: '不限'
@@ -163,38 +163,49 @@ class Const {
 
     /**
      * 获取某个常量的数据
-     * @param col String 需要获取的常量，如'auditStatus'
-     * @param hasDef Boolean 返回的数据中是否需要带默认值，如'全部'/'不限'
-     * @param def String 在hasDef为true时生效，此项指定默认值的描述，默认为'不限'；如果你需要默认值为'全部',请将参数def设置为'全部'
+     * @param conf
+     * conf {Object}
+     * @param conf.col String 需要获取的常量，如'auditStatus'
+     * @param conf.hasDef Boolean 返回的数据中是否需要带默认值，如'全部'/'不限'
+     * @param conf.def String 在hasDef为true时生效，此项指定默认值的描述，默认为'不限'；如果你需要默认值为'全部',请将参数def设置为'全部'
+     * conf {String}
+     * 会将conf作为需要获取的常量的key
+     * @returns {Array.<T>|string|Blob|ArrayBuffer|*}
      */
-
-    getData({col, hasDef = true, def = '不限', filterByKey, filterByVal}) {
+    getData(conf) {
+        if (typeof conf === 'string') {
+            conf = {
+                col: conf
+            };
+        }
+        conf = utility.base.extend(true, {}, {hasDef: true, def: '不限'}, conf);
         let data;
 
-        if (!this.isAsync(col)) {
-            data = this[col];
-        } else if (this.isHasCache(col)) {
-            data = this[col].data;
+        if (!this.isAsync(conf.col)) {
+            data = this[conf.col];
+        } else if (this.isHasCache(conf.col)) {
+            data = this[conf.col].data;
         }
 
         const defaultItem = JSON.parse(JSON.stringify(data[0]));
         let dataClone = JSON.parse(JSON.stringify(data)).slice(1);
 
-        if (Array.isArray(filterByKey) && filterByKey.length > 0){
-            dataClone = dataClone.filter(item=>{
-                return filterByKey.indexOf(item.key) > -1;
+        if (Array.isArray(conf.filterByKey) && conf.filterByKey.length > 0) {
+            dataClone = dataClone.filter(item => {
+                return conf.filterByKey.indexOf(item.key) > -1;
             });
         }
-        if (Array.isArray(filterByVal) && filterByVal.length > 0){
-            dataClone = dataClone.filter(item=>{
-                return filterByVal.indexOf(item.val) > -1;
+        if (Array.isArray(conf.filterByVal) && conf.filterByVal.length > 0) {
+            dataClone = dataClone.filter(item => {
+                return conf.filterByVal.indexOf(item.val) > -1;
             });
         }
-        if (hasDef){
+        console.log(conf);
+        if (conf.hasDef) {
             dataClone.unshift(defaultItem);
         }
-        if (def !== '不限') {
-            dataClone[0].val = def;
+        if (conf.def !== '不限') {
+            dataClone[0].val = conf.def;
         }
         return dataClone;
     }
@@ -211,7 +222,7 @@ class Const {
             return item.key === key;
         });
 
-        if (matchedItem.length > 0){
+        if (matchedItem.length > 0) {
             const isDefaultItem = matchedItem[0].val === '不限';
 
             if (isDefaultItem) {
@@ -235,7 +246,7 @@ class Const {
             return item.val === val;
         });
 
-        if (matchedItem.length > 0){
+        if (matchedItem.length > 0) {
             return matchedItem[0].key;
         }
     }

@@ -196,11 +196,31 @@ list支持两种指定方式：
 
 参数 | 说明 | 类型 | 默认值 | 可选值 | 描述 |
 --- | --- | --- | --- | ---- | ----
-col | 要获取的数据的key | String | 无 | 已添加或注册到Const实例的常量的key | 以此来获取对应的常量
-hasDef | 结果中是否需要包含默认值 | Boolean | true | true/false | 
-def | 结果中的默认值对应的val是什么 | 基本类型 | '不限' | 任何基本类型的值 | hasDef为true时生效
-filterByKey | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | key等于其中任一项的常量项会被返回
-filterByVal | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | val等于其中任一项的常量项会被返回
+conf | 获取数据时的选项 | Object/String | 无 | 见下方 | 当类型为string时该值会被作为conf.col解析，类型为Object时见下方  
+- col | 要获取的数据的key | String | 无 | 已添加或注册到Const实例的常量的key | 以此来获取对应的常量
+- hasDef | 结果中是否需要包含默认值 | Boolean | true | true/false | 
+- def | 结果中的默认值对应的val是什么 | 基本类型 | '不限' | 任何基本类型的值 | hasDef为true时生效
+- filterByKey | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | key等于其中任一项的常量项会被返回
+- filterByVal | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | val等于其中任一项的常量项会被返回
+
+##### conf
+
+* conf{String}
+
+已添加或注册到Const实例的常量的key，以此来获取对应的常量
+
+* conf{Object}
+
+```
+{
+    col: 'os',
+    hasDef: true,
+    def: '请选择',
+    filterByKey: [1],
+    filterByVal: ['android']
+}
+```
+
 
 #### 返回值
 
