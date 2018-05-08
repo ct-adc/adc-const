@@ -34,23 +34,10 @@ const tagType = [{
 
 con.add({status: status, os: os});
 con.add({tagType});
+
 con.register('type', {
     axios: {
         url: '/api/type',
-        transformResponse: [data=>{
-            data = JSON.parse(data);
-
-            if (data.Code === 0){
-                return {
-                    status: true,
-                    data: data.Data
-                };
-            }
-            return {
-                status: false,
-                data: []
-            };
-        }],
         params: {
             owner: 'tcy'
         }
@@ -58,6 +45,31 @@ con.register('type', {
     resolve: {
         key: 'Id',
         val: 'Val'
+    }
+});
+
+con.register('version', {
+    axios: {
+        url: '/api/version',
+        transformResponse: [(data) => {
+            data = JSON.parse(data);
+
+            if (data.Code === 0) {
+                return {
+                    status: true,
+                    data: data.Data.map(item=>{
+                        return {
+                            key: item,
+                            val: item
+                        };
+                    })
+                };
+            }
+            return {
+                status: false,
+                data: []
+            };
+        }]
     }
 });
 

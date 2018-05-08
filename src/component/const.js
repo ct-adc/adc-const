@@ -29,7 +29,8 @@ const defaults = {
         append: true,
         //该默认值中key字段的值
         key: ''
-    }
+    },
+    resolve: false
 };
 const defaultConfig = {
     defaultVals: ['不限', '请选择', '全部']
@@ -121,14 +122,15 @@ class Const {
             return axios.request(options.axios).then(response => {
                 const res = response.data;
 
-                if (options.resolve) {
-                    if (res.status) {
+                if (res.status) {
+                    if (options.resolve) {
                         this[col].data = this.resolveData(res.data, options.resolve.key, options.resolve.val, options.default);
-                        return Promise.resolve(response);
+                    } else {
+                        this[col].data = res.data;
                     }
-                    return Promise.reject(response);
+                    return Promise.resolve(response);
                 }
-                return Promise.resolve(response);
+                return Promise.reject(response);
             });
         };
     }
@@ -200,7 +202,6 @@ class Const {
                 return conf.filterByVal.indexOf(item.val) > -1;
             });
         }
-        console.log(conf);
         if (conf.hasDef) {
             dataClone.unshift(defaultItem);
         }
@@ -230,6 +231,7 @@ class Const {
             }
             return matchedItem[0].val;
         }
+        console.warn(`can\'t find val by ${key} of ${col}`);
     }
 
     /**
@@ -249,6 +251,7 @@ class Const {
         if (matchedItem.length > 0) {
             return matchedItem[0].key;
         }
+        console.warn(`can\'t find key by ${val} of ${col}`);
     }
 }
 

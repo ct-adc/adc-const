@@ -139,6 +139,23 @@ dataList必须满足以下条件：
 
 undefined
 
+#### 使用示例
+
+```
+const status = [{
+    key: '',
+    val: '不限'
+}, {
+    key: 1,
+    val: '已启用'
+}, {
+    key: 2,
+    val: '已禁用'
+}];
+
+con.add({status});
+```
+
 
 ### register
 
@@ -154,6 +171,42 @@ options | 异步数据配置 | Object | [异步数据配置](#options) | [异步
 #### 返回值
 
 undefined
+
+#### 使用示例
+
+```
+con.register('type', {
+    axios: {
+        url: '/api/type',
+        params: {
+            owner: 'tcy'
+        }
+    },
+    resolve: {
+        key: 'Id',
+        val: 'Val'
+    }
+});
+```
+
+### Const实例[常量]
+
+例如Const实例con, 在con上register一个异步数据type，Const内部会写入一个异步数据type，con.type为一个方法，即为该方法
+
+#### 参数列表
+
+参数 | 说明 | 类型 | 默认值 | 可选值 | 描述 |
+--- | --- | --- | --- | ---- | ----
+options | 异步数据配置 | Object | [异步数据配置](#options) | [异步数据配置](#options) | [异步数据配置](#options)
+
+开发者在获取异步数据时，可能有改写默认配置的需求，所以此处会提供options参数。
+当然，如果开发者只是需要按照register时的配置进行数据请求，那么该处的参数可以不传。
+
+#### 返回值
+
+一个promise对象
+
+如果该异步操作的options的resolve为false, 那么promise只会发起数据请求后直接返回，否则，在返回之前会按照options.resolve规则进行数据处理
 
 ### ensure
 
@@ -268,6 +321,54 @@ val | 指定的val |基本类型 | 无 | 基本类型 | col对应的常量中val
 
 ### options
 
+options的结构如下：
+
+#### options.axios {Object}
+
+[axios官方文档](https://github.com/axios/axios)
+
+需要注意的是，该插件通过axios.transformResponse将响应数据转换为形如{status: true/false, data: []}的对象。transformResponse的默认值[见下方](#options的默认配置)。
+当接口响应数据不是以下这种形式时，需要开发者自定定义transformResponse。
+
+```
+{
+    Code: 0, //为0时表示成功
+    Data: [{...}, {...}]
+}
+```
+
+#### options.cache {Boolean}
+
+此项指定异步数据在请求前，如果缓存有值是否读取缓存
+
+#### options.default {Object}
+
+因该插件要求常量一定有默认值，所以当开发者明确知道响应数据中没有默认值时，需要将default.append设置为true,并通过default.key指定默认值的key
+
+```
+default: {
+    //是否加入默认值
+    append: true,
+    //该默认值中key字段的值
+    key: ''
+}
+```
+
+#### options.resolve {Boolean | Object}
+
+options.resolve 为 false时，表示不进行数据处理
+
+options.resolve 为 object时，指定如何处理异步数据，其中resolve.key和resolve.val指定了要把数据中的哪两个key用来生成最终的key/val.
+
+```
+resolve: {
+    key: 'Id', // 将Id转换为key
+    val: 'Val' // 将Val转换为val
+}
+```
+
+##### options的默认配置
+
 ```
 {
     //axios配置项，参考axios官方文档
@@ -297,12 +398,13 @@ val | 指定的val |基本类型 | 无 | 基本类型 | col对应的常量中val
         append: true,
         //该默认值中key字段的值
         key: ''
-    }
+    },
+    resolve: false
 }
 
 ```
 
-[axios官方文档](https://github.com/axios/axios)
+
 
 
 ## 注意事项
