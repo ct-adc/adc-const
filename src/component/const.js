@@ -208,6 +208,12 @@ class Const {
         if (conf.def !== '不限') {
             dataClone[0].val = conf.def;
         }
+        dataClone = dataClone.map(item=>{
+            return {
+                [conf.keyStandby || 'key']: item.key,
+                [conf.valStandby || 'val']: item.val
+            };
+        });
         return dataClone;
     }
 

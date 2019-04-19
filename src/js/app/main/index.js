@@ -17,6 +17,8 @@ window.log = (d)=>{
 // console.log(JSON.stringify(Const.getData({col: 'tagType', hasDef: false})));
 // console.log('------------------');
 //
+
+console.log(Const.getData({col: 'tagType', hasDef: true, keyStandby: 'value', valStandby: 'label'}));
 Const.type({
     axios: {
         params: {

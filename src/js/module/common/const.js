@@ -2,7 +2,7 @@ import Const from 'const';
 
 const con = new Const();
 const status = [{
-    key: '',
+    key: -1,
     val: '不限'
 }, {
     key: 1,

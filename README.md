@@ -255,6 +255,8 @@ conf | 获取数据时的选项 | Object/String | 无 | 见下方 | 当类型为
 - def | 结果中的默认值对应的val是什么 | 基本类型 | '不限' | 任何基本类型的值 | hasDef为true时生效
 - filterByKey | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | key等于其中任一项的常量项会被返回
 - filterByVal | 结果中需要包含的项 | Array | undefined | 每项为任何基本类型的值 | val等于其中任一项的常量项会被返回
+- keyStandby | 结果中把key字段转换为指定的字段名 | 合法的对象属性名类型均可， 推荐String | undefined | 任何可作为对象属性名的值 | 返回的结果中会把key字段名替换为该值
+- valStandby | 结果中把val字段转换为指定的字段名 | 合法的对象属性名类型均可， 推荐String | undefined | 任何可作为对象属性名的值 | 返回的结果中会把val字段名替换为该值
 
 ##### conf
 
