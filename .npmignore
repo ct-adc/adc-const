@@ -11,5 +11,6 @@ index.html
 package-lock.json
 src/css/
 src/js/
+node_modules/
 
 
